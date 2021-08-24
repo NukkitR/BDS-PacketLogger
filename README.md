@@ -19,3 +19,8 @@ There are two offsets used in this project, which can be located in `offset.h`.
 `fn_NetworkHandler_SendInternal` is the relative address of function `NetworkHandler::_sendInternal` in module `bedrock_server.exe`. Currently, the value is `0x6B4B60`.
 
 The values can be easily updated from the Program Database File `bedrock_server.pdb` which comes along with the executable.
+
+## Credits
+
+The following project is used for hooking. Many thanks to the contributers.
+* [MinHook](https://github.com/TsudaKageyu/minhook)
