@@ -5,7 +5,7 @@ This is a PoC project to log all the packets running throught BDS by using tramp
 ## Features
 * No hard-coded value used for packets, all dumped from memory at runtime
 * Reliable and easy to use, no need to create a proxy
-* Get rid of encryption LOL
+* Don't worry about encryption. Our best friend BDS will handle it for you. LOL.
 
 ## Screenshots
 ![](https://github.com/NukkitReborn/BDS-PacketLogger/raw/master/screenshots/screenshot1.png)
