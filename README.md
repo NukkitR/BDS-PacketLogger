@@ -2,6 +2,14 @@
 
 This is a PoC project to log all the packets running throught BDS by using trampoline hook.
 
+## Instructions
+
+* Build the DLL using cmake
+* Start BDS
+* Use your favourite injector to inject the DLL
+* Ready to go
+* Packet logs are also written to the files under `packet_logs` directory.
+
 ## Features
 * No hard-coded value used for packets, all dumped from memory at runtime
 * Reliable and easy to use, no need to create a proxy
