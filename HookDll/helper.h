@@ -8,72 +8,90 @@ namespace helper {
 		return *reinterpret_cast<PVOID*>((uint64_t)lpObject);
 	}
 
-	VOID parseString(PVOID lpStr, PVOID* lpBuffer, int* len) {
-		PVOID ptr = lpStr;
-		int strlen = *reinterpret_cast<int*>((uint64_t)lpStr + 16);
-		if (strlen > 16) {
-			ptr = *reinterpret_cast<PVOID*>((uint64_t)lpStr);
+	BOOL isString(PVOID lpBuffer, int len) {
+		CHAR c;
+		for (int i = 0; i < len; i++) {
+			c = *reinterpret_cast<char*>((uint64_t)lpBuffer + i);
+			if (c < 32 || c >126) return FALSE;
 		}
-		*len = strlen;
-		*lpBuffer = ptr;
-		return;
+		return TRUE;
 	}
 
-	VOID printHexDump(PVOID buffer, int readerIndex, int len) {
-		if (len <= 0) return;
+	int hexDump(PVOID lpInBuffer, int readerIndex, int len, char* lpOutBuffer) {
+		if (len <= 0) return 0;
+		int outLen = 0;
+
+		BYTE b;
+		for (int i = 0; i < len; i++) {
+			b = *reinterpret_cast<byte*>((uint64_t)lpInBuffer + readerIndex + i);
+			outLen += sprintf(lpOutBuffer + outLen, "%02x ", b);
+		}
+
+		*(lpOutBuffer + outLen) = 0;
+		return outLen;
+	}
+
+	int prettyHexDump(PVOID lpInBuffer, int readerIndex, int len, char* lpOutBuffer) {
+		if (len <= 0) return 0;
+
+		int outLen = 0;
 		// HEADER
-		printf("         ");
+		outLen += sprintf(lpOutBuffer + outLen, "         ");
 		for (int i = 0; i < 51; i++) {
-			printf("-");
+			outLen += sprintf(lpOutBuffer + outLen, "-");
 		}
-		printf("\n         | ");
+		outLen += sprintf(lpOutBuffer + outLen, "\n         | ");
 		for (int i = 0; i < 16; i++) {
-			printf("%02x ", i);
+			outLen += sprintf(lpOutBuffer + outLen, " %01x ", i);
 		}
-		printf("|\n");
+		outLen += sprintf(lpOutBuffer + outLen, "|\n");
 		for (int i = 0; i < 79; i++) {
-			printf("-");
+			outLen += sprintf(lpOutBuffer + outLen, "-");
 		}
 
 		// BODY
 		BYTE b;
 		CHAR c;
 		for (int row = 0; row < ceil(1.0 * len / 16); row++) {
-			printf("\n%08x | ", row * 16);
+			outLen += sprintf(lpOutBuffer + outLen, "\n%08x | ", row * 16);
 			for (int col = 0; col < 16; col++) {
 				int i = row * 16 + col;
 				if (i < len) {
-					b = *reinterpret_cast<byte*>((uint64_t)buffer + readerIndex + i);
-					printf("%02x ", b);
+					b = *reinterpret_cast<byte*>((uint64_t)lpInBuffer + readerIndex + i);
+					outLen += sprintf(lpOutBuffer + outLen, "%02x ", b);
 				}
 				else {
-					printf("   ");
+					outLen += sprintf(lpOutBuffer + outLen, "   ");
 				}
 			}
-			printf("| ");
+
+			outLen += sprintf(lpOutBuffer + outLen, "| ");
 			for (int col = 0; col < 16; col++) {
 				int i = row * 16 + col;
 				if (i < len) {
-					c = *reinterpret_cast<char*>((uint64_t)buffer + readerIndex + i);
+					c = *reinterpret_cast<char*>((uint64_t)lpInBuffer + readerIndex + i);
 					if (c > 31 && c < 127) {
-						printf("%c", c);
+						outLen += sprintf(lpOutBuffer + outLen, "%c", c);
 					}
 					else {
-						printf(".");
+						outLen += sprintf(lpOutBuffer + outLen, ".");
 					}
 				}
 				else {
-					printf(" ");
+					outLen += sprintf(lpOutBuffer + outLen, " ");
 				}
 			}
-			printf(" |");
+			outLen += sprintf(lpOutBuffer + outLen, " |");
 		}
 
 		// FOOTER
-		printf("\n");
+		outLen += sprintf(lpOutBuffer + outLen, "\n");
 		for (int i = 0; i < 79; i++) {
-			printf("-");
+			outLen += sprintf(lpOutBuffer + outLen, "-");
 		}
-		return;
+
+		*(lpOutBuffer + outLen) = 0;
+
+		return outLen;
 	}
 }
