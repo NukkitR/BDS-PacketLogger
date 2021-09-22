@@ -32,6 +32,7 @@ namespace helper {
 	}
 
 	int prettyHexDump(PVOID lpInBuffer, int readerIndex, int len, char* lpOutBuffer) {
+		*(lpOutBuffer) = 0;
 		if (len <= 0) return 0;
 
 		int outLen = 0;
