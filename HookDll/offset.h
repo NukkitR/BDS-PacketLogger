@@ -8,15 +8,15 @@ namespace offset {
 	CompleteResult *__fastcall Packet::readExtended(
 		Packet* packet, 
 		ReadOnlyBinaryStream *stream, 
-		PVOID a3)
+		PVOID result)
 	*/
-	const uint64_t fn_Packet_ReadExtended = 0x348C70;
+	const uint64_t fn_Packet_ReadExtended = 0x367B30;
 	/*
 	Connection *__fastcall NetworkHandler::_sendInternal(
         NetworkHandler* this,
-        const struct NetworkIdentifier *a2,
+        const struct NetworkIdentifier *networkId,
         Packet *packet,
         PVOID packetBody)
 	*/
-	const uint64_t fn_NetworkHandler_SendInternal = 0x62B250;
+	const uint64_t fn_NetworkHandler_SendInternal = 0x646280;
 }
